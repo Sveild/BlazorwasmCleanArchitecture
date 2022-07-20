@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B847339D-D66
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{E095A54D-FDA6-4F16-BDF9-D59B21684375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorwasmCleanArchitecture.Client", "src\WebUI\BlazorwasmCleanArchitecture.Client\BlazorwasmCleanArchitecture.Client.csproj", "{EBCE2769-48FC-4449-9975-DC79E89E733C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "src\WebUI\Client\Client.csproj", "{EBCE2769-48FC-4449-9975-DC79E89E733C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorwasmCleanArchitecture.Server", "src\WebUI\BlazorwasmCleanArchitecture.Server\BlazorwasmCleanArchitecture.Server.csproj", "{18BF9CD9-1E44-464D-801E-94D482C20F71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "src\WebUI\Server\Server.csproj", "{18BF9CD9-1E44-464D-801E-94D482C20F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorwasmCleanArchitecture.Application", "src\BlazorwasmCleanArchitecture.Application\BlazorwasmCleanArchitecture.Application.csproj", "{B4569A68-0B42-4A27-8C29-60465CCE49F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{B4569A68-0B42-4A27-8C29-60465CCE49F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorwasmCleanArchitecture.Domain", "src\BlazorwasmCleanArchitecture.Domain\BlazorwasmCleanArchitecture.Domain.csproj", "{ECAC098D-388D-452F-BBFF-7459E691AAF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{ECAC098D-388D-452F-BBFF-7459E691AAF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorwasmCleanArchitecture.Infrastructure", "src\BlazorwasmCleanArchitecture.Infrastructure\BlazorwasmCleanArchitecture.Infrastructure.csproj", "{762915B7-61D8-45F4-821B-05AD87696B0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{762915B7-61D8-45F4-821B-05AD87696B0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

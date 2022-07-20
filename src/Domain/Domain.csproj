@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>BlazorwasmCleanArchitecture.Domain</PackageId>
+        <AssemblyName>BlazorwasmCleanArchitecture.Domain</AssemblyName>
+        <RootNamespace>BlazorwasmCleanArchitecture.Domain</RootNamespace>
+        <Authors>BlazorwasmCleanArchitecture.Domain</Authors>
+        <Company>BlazorwasmCleanArchitecture.Domain</Company>
+        <Product>BlazorwasmCleanArchitecture.Domain</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="9.0.0" />
+    </ItemGroup>
+
+</Project>
