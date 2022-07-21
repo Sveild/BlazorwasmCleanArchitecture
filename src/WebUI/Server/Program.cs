@@ -47,7 +47,6 @@ app.UseSwaggerUi3(settings =>
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -62,7 +61,4 @@ app.MapFallbackToFile("index.html");
 app.Run();
 
 // Make the implicit Program class public so test projects can access it
-namespace BlazorwasmCleanArchitecture.Server
-{
-    public partial class Program { }
-}
+public partial class Program { }

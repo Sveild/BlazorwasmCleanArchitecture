@@ -3,10 +3,12 @@ using BlazorwasmCleanArchitecture.Application.TodoLists.Commands.DeleteTodoList;
 using BlazorwasmCleanArchitecture.Application.TodoLists.Commands.UpdateTodoList;
 using BlazorwasmCleanArchitecture.Application.TodoLists.Queries.ExportTodos;
 using BlazorwasmCleanArchitecture.Application.TodoLists.Queries.GetTodos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorwasmCleanArchitecture.Server.Controllers;
 
+[Authorize]
 public class TodoListsController : ApiControllerBase
 {
     [HttpGet]

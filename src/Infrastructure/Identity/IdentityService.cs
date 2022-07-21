@@ -1,23 +1,36 @@
-﻿using BlazorwasmCleanArchitecture.Application.Common.Interfaces;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using BlazorwasmCleanArchitecture.Application.Common.Exceptions;
+using BlazorwasmCleanArchitecture.Application.Common.Interfaces;
 using BlazorwasmCleanArchitecture.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorwasmCleanArchitecture.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
+    private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
     private readonly IAuthorizationService _authorizationService;
 
     public IdentityService(
+        IConfiguration configuration,
         UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager, 
         IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService)
+        IAuthorizationService authorizationService
+    )
     {
+        _configuration = configuration;
         _userManager = userManager;
+        _signInManager = signInManager;
         _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
         _authorizationService = authorizationService;
     }
@@ -77,5 +90,32 @@ public class IdentityService : IIdentityService
         var result = await _userManager.DeleteAsync(user);
 
         return result.ToApplicationResult();
+    }
+    
+    public async Task<(Result result, string token)> LoginUserAsync(string userName, string password)
+    {
+        var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
+
+        if (!result.Succeeded)
+            throw new BadRequestException("Username and password are invalid.");
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, userName)
+        };
+        
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecurityKey"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var expiry = DateTime.Now.AddDays(Convert.ToInt32(_configuration["Jwt:ExpiryInDays"]));
+        
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: expiry,
+            signingCredentials: creds
+        );
+        
+        return (Result.Success(), new JwtSecurityTokenHandler().WriteToken(token));
     }
 }

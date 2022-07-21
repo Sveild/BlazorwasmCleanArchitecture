@@ -1,7 +1,23 @@
 ﻿@page "/"
+@using Newtonsoft.Json
+
+@inject ITodoItemsClient TodoItemsClient
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
+<button class="btn btn-primary" @onclick="Test">Test</button>
+
 Welcome to your new app.
+
+@code {
+    private async Task Test()
+    {
+        Console.WriteLine(
+            JsonConvert.SerializeObject(
+                await TodoItemsClient.GetTodoItemsWithPaginationAsync(1, null, null)
+            )
+        );
+    }
+}

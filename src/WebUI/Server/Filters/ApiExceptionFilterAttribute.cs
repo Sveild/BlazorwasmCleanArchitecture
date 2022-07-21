@@ -13,6 +13,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
+                { typeof(BadRequestException), HandleBadRequestException },
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
@@ -43,6 +44,22 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         }
     }
 
+    private void HandleBadRequestException(ExceptionContext context)
+    {
+        var exception = (BadRequestException) context.Exception;
+
+        var details = new ProblemDetails()
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = "Bad request",
+            Detail = exception.Message,
+        };
+        
+        context.Result = new BadRequestObjectResult(details);
+        
+        context.ExceptionHandled = true;
+    }
+    
     private void HandleValidationException(ExceptionContext context)
     {
         var exception = (ValidationException)context.Exception;
@@ -76,7 +93,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         var details = new ProblemDetails()
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "The specified resource was not found.",
+            Title = "The specified resource was not found",
             Detail = exception.Message
         };
 

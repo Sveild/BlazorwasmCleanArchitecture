@@ -4,10 +4,12 @@ using BlazorwasmCleanArchitecture.Application.TodoItems.Commands.DeleteTodoItem;
 using BlazorwasmCleanArchitecture.Application.TodoItems.Commands.UpdateTodoItem;
 using BlazorwasmCleanArchitecture.Application.TodoItems.Commands.UpdateTodoItemDetail;
 using BlazorwasmCleanArchitecture.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorwasmCleanArchitecture.Server.Controllers;
 
+[Authorize]
 public class TodoItemsController : ApiControllerBase
 {
     [HttpGet]
