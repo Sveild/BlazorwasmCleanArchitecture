@@ -7,6 +7,7 @@ using BlazorwasmCleanArchitecture.Client.Services.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -36,10 +37,6 @@ builder.Services.Scan(
                 .WithSingletonLifetime()
 );
 
-// builder.Services.AddScoped<ITodoItemsClient, TodoItemsClient>();
-// builder.Services.AddScoped<ITodoListsClient, TodoListsClient>();
-// builder.Services.AddScoped<IWeatherForecastClient, WeatherForecastClient>();
-// builder.Services.AddScoped<IAccountClient, AccountClient>();
-// builder.Services.AddScoped<ILoginClient, LoginClient>();
+builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();

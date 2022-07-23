@@ -3,56 +3,60 @@
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<h1>Login</h1>
+<PageTitle>Log in</PageTitle>
 
-@if (_showErrors)
-{
-    <div class="alert alert-danger" role="alert">
-        <p>@_error</p>
-    </div>
-}
-
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Please enter your details</h5>
-        <EditForm Model="_loginCommand" OnValidSubmit="HandleLogin">
+<MudContainer MaxWidth="MaxWidth.Small" Class="mud-height-full d-flex align-content-center flex-wrap">
+    <MudPaper Class="pa-4 mud-width-full">
+        <MudText Typo="Typo.h3">Login</MudText>
+        <EditForm @ref="_form" Model="@_loginCommand" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            
+            <MudTextField 
+                @bind-Value="_loginCommand.Email" For="@(() => _loginCommand.Email)" 
+                Immediate="true" InputType="InputType.Email" Label="Email"/>
+            
+            <MudTextField
+                @bind-Value="_loginCommand.Password" For="@(() => _loginCommand.Password)"
+                Immediate="true" Label="Password" InputType="_passwordInputType"
+                Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon"
+                OnAdornmentClick="ToggleShowPassword" AdornmentAriaLabel="Show Password"/>
 
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <InputText Id="email" Class="form-control" @bind-Value="_loginCommand.Email" />
-                <ValidationMessage For="@(() => _loginCommand.Email)" />
+            <div class="d-flex justify-center flex-grow-1 mt-4">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Log in</MudButton>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <InputText Id="password" type="password" Class="form-control" @bind-Value="_loginCommand.Password" />
-                <ValidationMessage For="@(() => _loginCommand.Password)" />
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
         </EditForm>
-    </div>
-</div>
+    </MudPaper>
+</MudContainer>
 
 @code {
-    private readonly LoginCommand _loginCommand = new LoginCommand();
-    private bool _showErrors;
-    private string _error = "";
+    private readonly LoginCommand _loginCommand = new();
 
-    private async Task HandleLogin()
+    private EditForm _form;
+    
+    private bool _showPassword;
+    private InputType _passwordInputType = InputType.Password;
+    private string _passwordInputIcon = Icons.Filled.VisibilityOff;
+
+    private void ToggleShowPassword()
     {
-        _showErrors = false;
+        if (_showPassword)
+        {
+            _showPassword = false;
+            _passwordInputType = InputType.Password;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+        }
+        else {
+            _showPassword = true;
+            _passwordInputType = InputType.Text;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+        }
+    }
 
+    private async Task OnValidSubmit()
+    {
         var result = await AuthService.Login(_loginCommand);
 
         if (result.Successful)
-        {
             NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            _error = result.Error;
-            _showErrors = true;
-        }
     }
 }

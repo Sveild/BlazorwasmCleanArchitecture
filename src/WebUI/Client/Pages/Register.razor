@@ -1,67 +1,89 @@
 ﻿@page "/register"
+
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<h1>Register</h1>
+<PageTitle>Register</PageTitle>
 
-@if (_showErrors)
-{
-    <div class="alert alert-danger" role="alert">
-        @foreach (var error in _errors)
-        {
-            <p>@error</p>
-        }
-    </div>
-}
+<MudContainer MaxWidth="MaxWidth.Small" Class="mud-height-full d-flex align-content-center flex-wrap">
+    <MudPaper Class="pa-4 mud-width-full">
+        <MudText Typo="Typo.h3">Register</MudText>
+        <EditForm @ref="_form" Model="@_registerCommand" OnValidSubmit="OnValidSubmit">
+            
+            <DataAnnotationsValidator/>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Please enter your details</h5>
-        <EditForm Model="_registerCommand" OnValidSubmit="HandleRegistration">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+            <MudTextField
+                @bind-Value="_registerCommand.Email" For="@(() => _registerCommand.Email)"
+                Immediate="true" InputType="InputType.Email" Label="Email"/>
 
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <InputText Id="email" class="form-control" @bind-Value="_registerCommand.Email" />
-                <ValidationMessage For="@(() => _registerCommand.Email)" />
+            <MudTextField
+                @bind-Value="_registerCommand.Password" For="@(() => _registerCommand.Password)"
+                Immediate="true" Label="Password" InputType="_passwordInputType"
+                Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon"
+                OnAdornmentClick="ToggleShowPassword" AdornmentAriaLabel="Show Password"/>
+
+            <MudTextField
+                @bind-Value="_registerCommand.ConfirmPassword" For="@(() => _registerCommand.ConfirmPassword)"
+                Immediate="true" Label="Email" InputType="_confirmPasswordInputType"
+                Adornment="Adornment.End" AdornmentIcon="@_confirmPasswordInputIcon"
+                OnAdornmentClick="ToggleShowConfirmPassword" AdornmentAriaLabel="Show Password"/>
+
+            <div class="d-flex justify-center flex-grow-1 mt-4">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Register</MudButton>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <InputText Id="password" type="password" class="form-control" @bind-Value="_registerCommand.Password" />
-                <ValidationMessage For="@(() => _registerCommand.Password)" />
-            </div>
-            <div class="form-group">
-                <label for="password">Confirm Password</label>
-                <InputText Id="password" type="password" class="form-control" @bind-Value="_registerCommand.ConfirmPassword" />
-                <ValidationMessage For="@(() => _registerCommand.ConfirmPassword)" />
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
         </EditForm>
-    </div>
-</div>
+    </MudPaper>
+</MudContainer>
 
 @code {
+    private readonly RegisterCommand _registerCommand = new();
 
-    private readonly RegisterCommand _registerCommand = new RegisterCommand();
-    private bool _showErrors;
-    private IEnumerable<string> _errors;
+    private EditForm _form;
+    
+    private bool _showPassword;
+    private InputType _passwordInputType = InputType.Password;
+    private string _passwordInputIcon = Icons.Filled.VisibilityOff;
 
-    private async Task HandleRegistration()
+    private bool _showConfirmPassword;
+    private InputType _confirmPasswordInputType = InputType.Password;
+    private string _confirmPasswordInputIcon = Icons.Filled.VisibilityOff;
+
+    private void ToggleShowPassword()
     {
-        _showErrors = false;
-
-        var result = await AuthService.Register(_registerCommand);
-
-        if (result.Successful)
+        if (_showPassword)
         {
-            NavigationManager.NavigateTo("/login");
+            _showPassword = false;
+            _passwordInputType = InputType.Password;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
         }
-        else
+        else {
+            _showPassword = true;
+            _passwordInputType = InputType.Text;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+        }
+    }
+    
+    private void ToggleShowConfirmPassword()
+    {
+        if (_showConfirmPassword)
         {
-            _errors = result.Errors;
-            _showErrors = true;
+            _showConfirmPassword = false;
+            _confirmPasswordInputType = InputType.Password;
+            _confirmPasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+        }
+        else {
+            _showConfirmPassword = true;
+            _confirmPasswordInputType = InputType.Text;
+            _confirmPasswordInputIcon = Icons.Material.Filled.Visibility;
         }
     }
 
+    private async Task OnValidSubmit()
+    {
+        var result = await AuthService.Register(_registerCommand);
+
+        if (result.Successful)
+            NavigationManager.NavigateTo("/login");
+    }
 }

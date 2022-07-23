@@ -522,15 +522,28 @@
       "RegisterCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "email",
+          "password",
+          "confirmPassword"
+        ],
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "nullable": false
           },
           "confirmPassword": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
           }
         }
       },
@@ -552,12 +565,20 @@
       "LoginCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "email",
+          "password"
+        ],
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
           },
           "rememberMe": {
             "type": "boolean"
@@ -618,6 +639,9 @@
       "CreateTodoItemCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "listId": {
             "type": "integer",
@@ -625,13 +649,18 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": false
           }
         }
       },
       "UpdateTodoItemCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -639,7 +668,9 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": false
           },
           "done": {
             "type": "boolean"
@@ -771,16 +802,24 @@
       "CreateTodoListCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "title": {
             "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": false
           }
         }
       },
       "UpdateTodoListCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -788,7 +827,9 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": false
           }
         }
       },

@@ -8,6 +8,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         RuleFor(x => x.Password).NotEmpty().Length(8, 100);
-        RuleFor(x => x.ConfirmPassword).Equal(x => x.Password);
+        RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password);
     }
 }

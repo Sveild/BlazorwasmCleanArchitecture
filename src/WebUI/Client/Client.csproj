@@ -18,14 +18,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="MudBlazor" Version="6.0.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Shared\Authentication\CustomLoggedOut.razor" />
-    <_ContentIncludedByDefault Remove="Shared\Authentication\LoginDisplay.razor" />
-    <_ContentIncludedByDefault Remove="Shared\Authentication\RedirectToLogin.razor" />
   </ItemGroup>
 
 </Project>

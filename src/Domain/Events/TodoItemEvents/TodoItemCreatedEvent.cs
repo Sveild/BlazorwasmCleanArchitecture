@@ -1,11 +1,11 @@
 ﻿using BlazorwasmCleanArchitecture.Domain.Common;
 using BlazorwasmCleanArchitecture.Domain.Entities;
 
-namespace BlazorwasmCleanArchitecture.Domain.Events;
+namespace BlazorwasmCleanArchitecture.Domain.Events.TodoItemEvents;
 
-public class TodoItemDeletedEvent : BaseEvent
+public class TodoItemCreatedEvent : BaseEvent
 {
-    public TodoItemDeletedEvent(TodoItem item)
+    public TodoItemCreatedEvent(TodoItem item)
     {
         Item = item;
     }

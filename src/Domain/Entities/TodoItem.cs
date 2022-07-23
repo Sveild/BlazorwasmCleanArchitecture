@@ -1,6 +1,7 @@
 ﻿using BlazorwasmCleanArchitecture.Domain.Common;
 using BlazorwasmCleanArchitecture.Domain.Enums;
 using BlazorwasmCleanArchitecture.Domain.Events;
+using BlazorwasmCleanArchitecture.Domain.Events.TodoItemEvents;
 
 namespace BlazorwasmCleanArchitecture.Domain.Entities;
 

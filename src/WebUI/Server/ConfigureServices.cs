@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using ZymLabs.NSwag.FluentValidation;
 
 namespace BlazorwasmCleanArchitecture.Server;
 
@@ -36,7 +37,7 @@ public static class ConfigureServices
         );
 
         services.AddOpenApiDocument(
-            configure =>
+            (configure, serviceProvider) =>
             {
                 configure.Title = "BlazorwasmCleanArchitecture API";
                 configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
@@ -48,6 +49,18 @@ public static class ConfigureServices
                 });
 
                 configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                configure.SchemaProcessors.Add(
+                    serviceProvider.CreateScope().ServiceProvider.GetService<FluentValidationSchemaProcessor>()
+                );
+            }
+        );
+
+        services.AddScoped<FluentValidationSchemaProcessor>(provider =>
+            {
+                var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
+                var loggerFactory = provider.GetService<ILoggerFactory>();
+
+                return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
             }
         );
 

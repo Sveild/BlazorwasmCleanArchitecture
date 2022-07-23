@@ -2,6 +2,7 @@
 using BlazorwasmCleanArchitecture.Application.Common.Interfaces;
 using BlazorwasmCleanArchitecture.Domain.Entities;
 using BlazorwasmCleanArchitecture.Domain.Events;
+using BlazorwasmCleanArchitecture.Domain.Events.TodoItemEvents;
 using MediatR;
 
 namespace BlazorwasmCleanArchitecture.Application.TodoItems.Commands.DeleteTodoItem;
