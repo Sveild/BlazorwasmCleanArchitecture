@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using BlazorwasmCleanArchitecture.Application.Common.Behaviours;
+using BlazorwasmCleanArchitecture.Application.Common.Mappings;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,8 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        MappingProfile.ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));

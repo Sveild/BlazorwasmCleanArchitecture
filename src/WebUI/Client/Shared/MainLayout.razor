@@ -1,26 +1,5 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MenuBar />
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <AppBar/>
-    </MudAppBar>
-    <MudDrawer Open="true" Elevation="1">
-        <Drawer/>
-    </MudDrawer>
-    <MudMainContent Class="mud-height-full pt-16">
-        <CustomErrorBoundary>
-            <ChildContent>
-                <MudContainer MaxWidth="MaxWidth.False" Class="pt-3">
-                    @Body
-                </MudContainer>
-            </ChildContent>
-            <ErrorContent Context="exception">
-                <DisplayModalException Exception="exception" />
-            </ErrorContent>
-        </CustomErrorBoundary>
-    </MudMainContent>
-</MudLayout>
+@Body

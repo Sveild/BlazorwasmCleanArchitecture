@@ -1,26 +1,15 @@
 using System.Reflection;
-using AutoMapper;
 
 namespace BlazorwasmCleanArchitecture.Application.Common.Mappings;
 
-public class MappingProfile : Profile
+public static class MappingProfile
 {
-    public MappingProfile()
-    {
-        ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-    }
-
-    private void ApplyMappingsFromAssembly(Assembly assembly)
+    public static void ApplyMappingsFromAssembly(Assembly assembly)
     {
         var mapFromType = typeof(IMapFrom<>);
-        
         var mappingMethodName = nameof(IMapFrom<object>.Mapping);
-
         bool HasInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
-        
         var types = assembly.GetExportedTypes().Where(t => t.GetInterfaces().Any(HasInterface)).ToList();
-        
-        var argumentTypes = new Type[] { typeof(Profile) };
 
         foreach (var type in types)
         {
@@ -30,7 +19,7 @@ public class MappingProfile : Profile
 
             if (methodInfo != null)
             {
-                methodInfo.Invoke(instance, new object[] { this });
+                methodInfo.Invoke(instance, Array.Empty<object>());
             }
             else
             {
@@ -40,9 +29,9 @@ public class MappingProfile : Profile
                 {
                     foreach (var @interface in interfaces)
                     {
-                        var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, argumentTypes);
+                        var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, Array.Empty<Type>());
 
-                        interfaceMethodInfo?.Invoke(instance, new object[] { this });
+                        interfaceMethodInfo?.Invoke(instance, Array.Empty<object>());
                     }
                 }
             }

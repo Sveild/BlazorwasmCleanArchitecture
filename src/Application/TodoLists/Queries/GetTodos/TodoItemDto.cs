@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using BlazorwasmCleanArchitecture.Application.Common.Mappings;
+﻿using BlazorwasmCleanArchitecture.Application.Common.Mappings;
 using BlazorwasmCleanArchitecture.Domain.Entities;
+using Mapster;
 
 namespace BlazorwasmCleanArchitecture.Application.TodoLists.Queries.GetTodos;
 
@@ -18,9 +18,10 @@ public class TodoItemDto : IMapFrom<TodoItem>
 
     public string? Note { get; set; }
 
-    public void Mapping(Profile profile)
+    public void Mapping()
     {
-        profile.CreateMap<TodoItem, TodoItemDto>()
-            .ForMember(d => d.Priority, opt => opt.MapFrom(s => (int)s.Priority));
+        TypeAdapterConfig<TodoItem, TodoItemDto>
+            .NewConfig()
+            .Map(dest => dest.Priority, src => (int) src.Priority);
     }
 }

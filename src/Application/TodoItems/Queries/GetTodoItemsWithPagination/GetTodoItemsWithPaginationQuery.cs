@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using BlazorwasmCleanArchitecture.Application.Common.Interfaces;
+﻿using BlazorwasmCleanArchitecture.Application.Common.Interfaces;
 using BlazorwasmCleanArchitecture.Application.Common.Mappings;
 using BlazorwasmCleanArchitecture.Application.Common.Models;
+using Mapster;
 using MediatR;
 
 namespace BlazorwasmCleanArchitecture.Application.TodoItems.Queries.GetTodoItemsWithPagination;
@@ -17,12 +16,10 @@ public record GetTodoItemsWithPaginationQuery : IRequest<PaginatedList<TodoItemB
 public class GetTodoItemsWithPaginationQueryHandler : IRequestHandler<GetTodoItemsWithPaginationQuery, PaginatedList<TodoItemBriefDto>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
 
-    public GetTodoItemsWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetTodoItemsWithPaginationQueryHandler(IApplicationDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<PaginatedList<TodoItemBriefDto>> Handle(GetTodoItemsWithPaginationQuery request, CancellationToken cancellationToken)
@@ -30,7 +27,7 @@ public class GetTodoItemsWithPaginationQueryHandler : IRequestHandler<GetTodoIte
         return await _context.TodoItems
             .Where(x => x.ListId == request.ListId)
             .OrderBy(x => x.Title)
-            .ProjectTo<TodoItemBriefDto>(_mapper.ConfigurationProvider)
+            .Adapt<IOrderedQueryable<TodoItemBriefDto>>()
             .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }

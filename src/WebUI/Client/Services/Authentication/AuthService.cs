@@ -8,22 +8,19 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorwasmCleanArchitecture.Client.Services.Authentication;
 
-public class AuthService : IAuthService
+public class AuthService : IAuthService, IScopedService
 {
-    private readonly HttpClient _httpClient;
     private readonly IAccountClient _accountClient;
     private readonly ILoginClient _loginClient;
     private readonly AuthenticationStateProvider _authenticationStateProvider;
     private readonly ILocalStorageService _localStorage;
 
     public AuthService(
-        HttpClient httpClient,
         IAccountClient accountClient,
         ILoginClient loginClient,
         AuthenticationStateProvider authenticationStateProvider,
         ILocalStorageService localStorage)
     {
-        _httpClient = httpClient;
         _accountClient = accountClient;
         _loginClient = loginClient;
         _authenticationStateProvider = authenticationStateProvider;
@@ -47,8 +44,8 @@ public class AuthService : IAuthService
     
         await _localStorage.SetItemAsync("authToken", response.Token);
         ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginCommand.Email);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", response.Token);
-    
+        BaseClient.SetBearerToken(response.Token);
+
         return response;
     }
     
@@ -56,6 +53,5 @@ public class AuthService : IAuthService
     {
         await _localStorage.RemoveItemAsync("authToken");
         ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
-        _httpClient.DefaultRequestHeaders.Authorization = null;
     }
 }

@@ -8,12 +8,10 @@ namespace BlazorwasmCleanArchitecture.Client.Providers;
 
 public class ApiAuthenticationStateProvider : AuthenticationStateProvider
 {
-    private readonly HttpClient _httpClient;
     private readonly ILocalStorageService _localStorage;
 
-    public ApiAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+    public ApiAuthenticationStateProvider(ILocalStorageService localStorage)
     {
-        _httpClient = httpClient;
         _localStorage = localStorage;
     }
     
@@ -21,14 +19,9 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     {
         var savedToken = await _localStorage.GetItemAsync<string>("authToken");
 
-        if (string.IsNullOrWhiteSpace(savedToken))
-        {
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-        }
-
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
-
-        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
+        return string.IsNullOrWhiteSpace(savedToken) ? 
+            new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())) 
+            : new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
     }
     
     public void MarkUserAsAuthenticated(string email)

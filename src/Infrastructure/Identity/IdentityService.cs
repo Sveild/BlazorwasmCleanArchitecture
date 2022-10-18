@@ -99,8 +99,11 @@ public class IdentityService : IIdentityService
         if (!result.Succeeded)
             throw new BadRequestException("Username and password are invalid.");
 
+        var userId = (await _userManager.Users.FirstAsync(user => user.UserName == userName)).Id!;
+        
         var claims = new[]
         {
+            new Claim(ClaimTypes.NameIdentifier, userId),
             new Claim(ClaimTypes.Name, userName)
         };
         
